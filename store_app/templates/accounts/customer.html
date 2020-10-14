@@ -1,0 +1,77 @@
+{% extends 'store_app/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+	.profile-pic{
+		max-width: 150px;
+		max-height:150px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5 style="text-align: center">Customer:</h5>
+			<hr>
+			<img class="profile-pic" src="{% static 'images/profile.png' %}" >
+            <hr>
+            <h6 style="text-align: center">{{request.user}}</h6>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+            <h5 style="text-align: center">Edit Profile:</h5>
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+
+			<input class="btn btn-primary" type="submit" name="Update Information">
+			</form>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total Orders</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{order_count}}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Order ID</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+				</tr>
+
+				{% for order in orders %}
+
+				<tr>
+					<td>{{order.transaction_id}}</td>
+					<td>{{order.date_ordered}}</td>
+					<td>{{order.complete}}</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

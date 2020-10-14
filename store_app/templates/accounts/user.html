@@ -1,0 +1,30 @@
+{% extends 'store_app/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Category</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+				</tr>
+
+				{% for orders in order %}
+
+				<tr>
+					<td>{{orders.product}}</td>
+					<td>{{orders.product.category}}</td>
+					<td>{{orders.date_created}}</td>
+					<td>{{orders.status}}</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock content %}

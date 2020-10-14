@@ -1,0 +1,60 @@
+{% extends 'store_app/main.html' %}
+{% load static %}
+{% block content %}
+
+{%  include 'accounts/status.html' %}
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>CUSTOMERS:</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Customer</th>
+					<th>Email</th>
+				</tr>
+
+				{% for customer in customers %}
+					<tr>
+
+						<td><a href="{% url 'customer' customer.id %}">{{customer.username}}</a></td>
+						<td>{{customer.email}}</td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h5>LAST 5 ORDERS</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Order</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Transaction id</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+
+				{% for order in orders %}
+					<tr>
+						<td>{{order.transaction_id}}</td>
+						<td><a href="">Update</a></td>
+						<td><a href="">Delete</a></td>
+
+					</tr>
+				{% endfor %}
+
+
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock content %}

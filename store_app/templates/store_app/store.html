@@ -1,0 +1,78 @@
+{% extends 'store_app/main.html' %}
+{% load static %}
+{% block content %}
+<body>
+  <div class="container">
+
+    <div class="row">
+
+
+
+        <div class="container">
+        <nav class="navbar navbar-dark bg-dark">
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="{{myFilter.form.name}}
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </nav>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <div class="box card" href="{% url 'product_view' product.id %}">
+                        <div class="box cardImg">
+                            <img src="{{product.imageURL}}" alt="...">
+                        </div>
+                        <div class="info">
+                            <h6>{{product.name}}</h6>
+                            <p><span>{{product.price|floatformat:2}}</span>€</p>
+                            <div class="btn-group " role="group">
+                                <button data-product={{product.id}} data-action="add"  class="btn btn-outline-secondary add-btn update-cart">Add</button>
+                                <a class="btn btn-outline-success" href="{% url 'product_view' product.id %}">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+
+
+
+
+
+        <!-- /.row -->
+      {% if products.has_other_pages %}
+        <hr>
+        <div class="pagination-center">
+            <ul class="pagination">
+                {% if products.has_previous %}
+                   <li> <a class="btn-outline-info mb-4" href='?page=1'><<</a></li>
+                    <li><a class="btn-outline-info mb-4" href='?page={{ products.previous_page_number }}'><</a></li>
+                {% endif %}
+
+                {% for num in products.paginator.page_range %}
+                    {% if product.number == num %}
+                        <li><a class='btn-info mb-4' href='?page={{num}}'>{{num}}</a></li>
+                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                        <li><a class="btn-outline-info mb-4" href="?page={{num}}">{{num}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+                {% if products.has_next %}
+                    <li><a class="btn-outline-info mb-4" href='?page={{ products.next_page_number }}'>></a></li>
+                    <li><a class="btn-outline-info mb-4" href='?page={{ products.paginator.num_pages }}'>>></a></li>
+                {% endif %}
+            </ul>
+        </div>
+      {% endif %}
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+</body>
+
+{% endblock content %}

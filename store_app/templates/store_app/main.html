@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		var cookieValue = null;
+		if (document.cookie && document.cookie !== '') {
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = cookies[i].trim();
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) === (name + '=')) {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
+				}
+			}
+		}
+    	return cookieValue;
+	}
+		var csrftoken = getToken('csrftoken');
+
+		function getCookie(name) {
+		    var cookieArr = document.cookie.split(";");
+
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        if(name == cookiePair[0].trim()) {
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if(cart == undefined){
+			cart = {}
+			console.log('Cart created')
+			document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+
+		console.log('Cart:', cart)
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Shop Pirk24/7</title>
+
+  <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/shop.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'store' %}">Shop 24/7</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Project</a>
+          </li>
+            <a href="{% url 'cart' %}">
+	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+	    	</a>
+	    	<p id="cart-total">{{cartItems}}</p>
+
+
+           <ul class="nav navbar-nav ml-md--auto">
+                    {% if request.user.customer %}
+                    <li class="dropdown">
+
+
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{request.user}}<b class="caret"></b>
+                        </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'customer' user.id %}">Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    {% if request.user.is_staff %}
+		                            <a class="dropdown-item" href="/adminpanel">Admin panel</a>
+		                            {% endif %}
+                                    {% if request.user.customer %}
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                    {% endif %}
+                            </div>
+                    {% endif %}
+                    </li>
+                     {% if request.user.is_anonymous %}
+                     <li class="dropdown">
+
+
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                Welcome, User <b class="caret"></b>
+                        </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% if request.user.is_anonymous %}
+                                    <a class="dropdown-item" href="/login">Login</a>
+                                    <a class="dropdown-item" href="/register">Registration</a>
+                                    {% endif %}
+                            </div>
+
+                    </li>
+                    {% endif %}
+            </ul>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+     <div class="container">
+            <br>
+            {% block content %}
+
+
+            {% endblock content %}
+         </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'jquery/jquery.min.js'%}"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+  <script type="text/javascript" src="{% static 'js/cart.js'%}"></script>
+
+
+
+
+</body>
+
+</html>
